@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using System;
+using System.Data.Entity;
 
 namespace Ejercicio18.Models
 {
@@ -20,14 +22,20 @@ namespace Ejercicio18.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        [ThreadStatic]
+        public static ApplicationDbContext applicationDbContext;
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
         
+        public DbSet<Entrada> Entradas { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Ejercicio18.Models.Persona> Personas { get; set; }
     }
 }
